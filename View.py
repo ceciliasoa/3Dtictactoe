@@ -134,7 +134,6 @@ class Gameboard:
                 self.gameover = True
                 self.winner = self.board[px]
                 self.draw=False
-                print(win)
                 break
         else:
             if len(self.moves) == 27:
@@ -190,23 +189,29 @@ class Board:
 
     def mouseClick(self,pos):
         px,py=pos
-        if self.gameboard.gameOver():
-                self.reset()
         if (300 < px < 700) and (900 < py < 950):
             print("desistiu")
             self.gameboard.giveUp = True
+            return True
         elif 65 < px < 537:
             if py < 295:
                 cell, center = self.position.getPlan1Position(px,py)
-                self.player1.mouseClick(cell, center)  
+                self.player1.mouseClick(cell, center)
+                if cell != -1:
+                    return True
                
             elif 300 < py < 518:
                 cell, center =self.position.getPlan2Position(px,py)
                 self.player1.mouseClick(cell, center)
-                
+                if cell != -1:
+                    return True
+            
             elif 520 < py < 760:
                 cell, center = self.position.getPlan3Position(px,py)
                 self.player1.mouseClick(cell, center)
+                if cell != -1:
+                    return True
+        return False
                 
     def playMove(self):
         for i, move in enumerate(self.gameboard.moves):
@@ -235,11 +240,11 @@ class Board:
         textstr=''
         if self.gameboard.gameOver():
             if self.gameboard.gameDraw():
-                textstr="Deu velha. Clique para reiniciar"
+                textstr="Deu velha. aperte espaço para reiniciar"
             elif self.gameboard.playerGiveUp():
                 textstr=self.player1.name+" desistiu."
             else:
-                textstr=self.player1.name+" ganhou. Clique para reiniciar "
+                textstr=self.player1.name+" ganhou. aperte espaço para reiniciar "
         else:
             textstr=" turno de "+self.player1.name+" "
 
